@@ -1,0 +1,25 @@
+name: 📚 کتاب روز - هر ۲۴ ساعت
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # هر روز ساعت ۹ صبح
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install
+        run: pip install python-telegram-bot requests
+
+      - name: Send book
+        env:
+          BOT_TOKEN:  ${{ secrets.BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+        run: python book_bot.py
